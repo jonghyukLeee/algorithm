@@ -19,7 +19,7 @@ public class Q1012 {
      * 필요한 최소의 배추흰지렁이 마리 수를 출력한다.
      */
     static int [] move_x = {-1,1,0,0};
-    static int [] move_y = {-1,1,0,0};
+    static int [] move_y = {0,0,-1,1};
     static boolean [][] isVisited;
     static void dfs(int [][] arr, int x, int y)
     {
@@ -27,7 +27,7 @@ public class Q1012 {
         {
             int mvd_x = x + move_x[i];
             int mvd_y = y + move_y[i];
-            if(mvd_x < 0 || mvd_y < 0 || mvd_x >= arr.length || mvd_y >= arr.length) continue;
+            if(mvd_x < 0 || mvd_y < 0 || mvd_x >= arr.length || mvd_y >= arr[0].length) continue;
             if(arr[mvd_x][mvd_y] == 1 && !isVisited[mvd_x][mvd_y])
             {
                 isVisited[mvd_x][mvd_y] = true;
@@ -50,30 +50,31 @@ public class Q1012 {
             int y = Integer.parseInt(st.nextToken());
             int n = Integer.parseInt(st.nextToken());
             int cnt = 0;
-            arr = new int[x][y];
+            arr = new int[y][x];
             for(int i = 0; i < n; ++i)
             {
                 st = new StringTokenizer(br.readLine());
                 arr[Integer.parseInt(st.nextToken())][Integer.parseInt(st.nextToken())] = 1;
             }
-            isVisited  = new boolean[x][y];
-            isVisited[0][0] = true;
-            for(int i = 0; i < y; ++i)
+
+            isVisited  = new boolean[y][x];
+            for(int i = 0; i < arr.length; ++i)
             {
-                for(int j = 0; j < x; ++j)
+                for(int j = 0; j < arr[0].length; ++j)
                 {
-                    if(isVisited[i][j] == false || arr[i][j] == 1)
+                    if(!isVisited[i][j] && arr[i][j] == 1)
                     {
+                        System.out.printf("("+i+","+j+") = %d\n",arr[i][j]);
                         isVisited[i][j] = true;
-                        dfs(arr,i,j);   //dfs끝나고 돌아오면 카운트 ++
+                        dfs(arr,i,j);
+                        cnt++;
                     }
                 }
             }//end of for (i)
             bw.write(cnt+"\n");
             bw.flush();
-            bw.close();
-            br.close();
-
         }
+        bw.close();
+        br.close();
     }
 }
