@@ -64,7 +64,6 @@ public class Q1012 {
                 {
                     if(!isVisited[i][j] && arr[i][j] == 1)
                     {
-                        System.out.printf("("+i+","+j+") = %d\n",arr[i][j]);
                         isVisited[i][j] = true;
                         dfs(arr,i,j);
                         cnt++;
