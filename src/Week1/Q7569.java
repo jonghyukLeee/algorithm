@@ -27,7 +27,7 @@ public class Q7569 {
     static int min_day;
     static ArrayList<Point2> arrayList;
     static boolean isVisited [][][];
-    static void dfs()
+    static void bfs()
     {
         Queue<Point2> q = new LinkedList<>();
         for(Point2 i : arrayList)
@@ -35,26 +35,42 @@ public class Q7569 {
             int x = i.x;
             int y = i.y;
             int z = i.z;
+            //System.out.printf("(bfs): add to Q(%d,%d,%d)\n",x,y,z);
             q.add(new Point2(z,y,x,0));
         }
         while(!q.isEmpty())
         {
             Point2 p = q.poll();
+            int x = p.x;
+            int y = p.y;
+            int z = p.z;
+            int d = p.day;
+            System.out.printf("(queue): poll and move(%d,%d,%d), day = %d\n",x,y,z,d);
+            if(min_day < d)
+            {
+                System.out.printf("min = %d\n",min_day);
+                min_day = d;
+            }
+
             for(int i = 0; i < 6; ++i)
             {
-                int d = p.day;
-                if(min_day < d) min_day = d;
-                int dx = p.x+move_x[i];
-                int dy = p.y+move_y[i];
-                int dz = p.z+move_z[i];
-                if(dx<0 || dy<0 || dz<0 || dz >= box.length || dy>=box[0].length || dx>= box[0][0].length) continue;
-                if(box[dz][dy][dx]>=0)
+                int dx = x+move_z[i];
+                int dy = y+move_y[i];
+                int dz = z+move_x[i];
+                System.out.printf("(%d,%d,%d) + (%d,%d,%d)->",x,y,z,move_z[i],move_y[i],move_x[i]);
+                if(dx<0 || dy<0 || dz<0 || dx >= box.length || dy>=box[0].length || dz>= box[0][0].length)
                 {
-                    isVisited[dz][dy][dx] = true;
-                    box[dz][dy][dx] = 1;
-                    System.out.printf("(%d,%d,%d) = 1\n",dz,dy,dx);
-                    arrayList.add(new Point2(dz,dy,dx,d+1));
+                    System.out.println("fail");
+                    continue;
                 }
+                if(box[dx][dy][dz]>=0 && !isVisited[dx][dy][dz])
+                {
+                    System.out.println("success");
+                    box[dx][dy][dz] = 1;
+                    //System.out.printf("(%d,%d,%d) = 1\n",dx,dy,dz);
+                    q.add(new Point2(dz,dy,dx,d+1));
+                }
+                System.out.printf("(%d,%d,%d) visited\n",dx,dy,dz);
             }
         }
 
@@ -78,7 +94,7 @@ public class Q7569 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
         arrayList = new ArrayList<>();
-        int day = 0;
+        min_day = 0;
         st = new StringTokenizer(br.readLine());
         int x = Integer.parseInt(st.nextToken());
         int y = Integer.parseInt(st.nextToken());
@@ -102,7 +118,7 @@ public class Q7569 {
             }
         }
         System.out.println("끝");
-        dfs();
+        bfs();
         System.out.println(checkArr(box));
     }
 }
