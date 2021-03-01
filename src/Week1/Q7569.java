@@ -45,7 +45,8 @@ public class Q7569 {
             int y = p.y;
             int z = p.z;
             int d = p.day;
-            System.out.printf("(queue): poll and move(%d,%d,%d), day = %d\n",x,y,z,d);
+            isVisited[x][y][z]= true;
+           // System.out.printf("(queue): poll and move(%d,%d,%d), day = %d\n",x,y,z,d);
             if(min_day < d)
             {
                 System.out.printf("min = %d\n",min_day);
@@ -57,26 +58,26 @@ public class Q7569 {
                 int dx = x+move_z[i];
                 int dy = y+move_y[i];
                 int dz = z+move_x[i];
-                System.out.printf("(%d,%d,%d) + (%d,%d,%d)->",x,y,z,move_z[i],move_y[i],move_x[i]);
+                //System.out.printf("(%d,%d,%d) + (%d,%d,%d)->",x,y,z,move_z[i],move_y[i],move_x[i]);
                 if(dx<0 || dy<0 || dz<0 || dx >= box.length || dy>=box[0].length || dz>= box[0][0].length)
                 {
-                    System.out.println("fail");
+                   // System.out.println("fail");
                     continue;
                 }
                 if(box[dx][dy][dz]>=0 && !isVisited[dx][dy][dz])
                 {
-                    System.out.println("success");
+                   // System.out.println("success");
                     box[dx][dy][dz] = 1;
                     //System.out.printf("(%d,%d,%d) = 1\n",dx,dy,dz);
                     q.add(new Point2(dz,dy,dx,d+1));
                 }
-                System.out.printf("(%d,%d,%d) visited\n",dx,dy,dz);
+               // System.out.printf("(%d,%d,%d) visited\n",dx,dy,dz);
             }
         }
 
 
     }
-    static int checkArr(int [][][] arr)
+    static int checkArr(int [][][] arr,int day)
     {
         for(int i = 0; i < arr.length; ++i)
         {
@@ -84,11 +85,13 @@ public class Q7569 {
             {
                 for(int k = 0; k < arr[0][0].length; ++k)
                 {
+                    //System.out.printf("(%d,%d,%d) = %d",i,j,k,arr[i][j][k]);
                     if(arr[i][j][k]==0) return -1;
                 }
             }
+            //System.out.println();
         }
-        return 0;
+        return day;
     }
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -117,8 +120,7 @@ public class Q7569 {
                 }
             }
         }
-        System.out.println("끝");
         bfs();
-        System.out.println(checkArr(box));
+        System.out.println(checkArr(box,min_day));
     }
 }
