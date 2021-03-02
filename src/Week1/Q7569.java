@@ -122,5 +122,6 @@ public class Q7569 {
         }
         bfs();
         System.out.println(checkArr(box,min_day));
+        br.close();
     }
 }
