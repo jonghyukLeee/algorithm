@@ -69,7 +69,7 @@ public class Q1012 {
                         cnt++;
                     }
                 }
-            }//end of for (i)
+            }
             bw.write(cnt+"\n");
             bw.flush();
         }
