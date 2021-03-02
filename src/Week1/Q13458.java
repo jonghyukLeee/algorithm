@@ -39,5 +39,6 @@ public class Q13458 {
             }
         }
         System.out.println(cnt);
+        br.close();
     }
 }
