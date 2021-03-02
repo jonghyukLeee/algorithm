@@ -1,7 +1,6 @@
 package Week1;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.StringTokenizer;
 class Location
 {
