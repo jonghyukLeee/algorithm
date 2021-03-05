@@ -4,11 +4,12 @@ import java.io.*;
 import java.util.StringTokenizer;
 class Location
 {
-    int x,y;
+    int x,y,cnt;
     public Location(int x, int y)
     {
         this.x = x;
         this.y = y;
+        this.cnt = cnt;
     }
 }
 public class Q13460 {
@@ -22,12 +23,12 @@ public class Q13460 {
         int x = Integer.parseInt(st.nextToken());
         int y = Integer.parseInt(st.nextToken());
         int ins_cnt = 0;
-        board = new char[y][x];
+        board = new char[x][y];
         loc = new Location[3];
-        for(int i = 0; i < y; ++i)
+        for(int i = 0; i < x; ++i)
         {
             String s = br.readLine();
-            for(int j = 0; j < x; ++j)
+            for(int j = 0; j < y; ++j)
             {
                 board[i][j] = s.charAt(j);
                 if(ins_cnt > 2) continue;
@@ -45,7 +46,7 @@ public class Q13460 {
                         ins_cnt++;
                         break;
                     }
-                    case '0' :
+                    case 'O' :
                     {
                         loc[2] = new Location(i,j);
                         ins_cnt++;
@@ -55,6 +56,7 @@ public class Q13460 {
                 }
             }
         } //end
+
 
     }
 }
