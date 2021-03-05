@@ -31,6 +31,7 @@ public class Q7568 {
         {
             for(int j = 0; j < t; ++j)
             {
+                if(i == j) continue;
                 if(body[i].height < body[j].height && body[i].weight < body[j].weight)
                 {
                     body[i].rank++;
