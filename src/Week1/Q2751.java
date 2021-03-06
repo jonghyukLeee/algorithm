@@ -5,19 +5,37 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Q2751 {
-    static int quickSort(int [] arr,int left, int right)
+    static void quickSort(int [] arr,int left, int right)
     {
-        int pv = (left+right)/2;
+        for(int i : arr)
+        {
+            System.out.printf("%d ",i);
+        }
+        System.out.println();
+        int part = partition(arr,left,right);
+        if(left < part-1)
+        {
+            quickSort(arr,left,part-1);
+        }
+        if(part < right)
+        {
+            quickSort(arr,part,right);
+        }
+    }
+    static int partition(int [] arr, int left, int right)
+    {
+        int pv = arr[(left+right)/2];
         while(left <= right)
         {
-            while(arr[left] < arr[pv]) left++;
-            while(arr[right] > arr[pv]) right++;
-
+            while(arr[left]< pv) left++;
+            while(arr[right] > pv) right--;
             if(left <= right)
             {
                 int tmp = arr[left];
                 arr[left] = arr[right];
                 arr[right] = tmp;
+                left++;
+                right--;
             }
         }
         return left;
@@ -30,6 +48,10 @@ public class Q2751 {
         {
             arr[i] = Integer.parseInt(br.readLine());
         }
-        quickSort(arr,0,arr.length-1);
+        quickSort(arr,0,t-1);
+        for(int i : arr)
+        {
+            System.out.printf("%d ",i);
+        }
     }
 }
