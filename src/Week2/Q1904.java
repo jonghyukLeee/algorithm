@@ -8,6 +8,7 @@ public class Q1904 {
     static int [] dp;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         int n = Integer.parseInt(br.readLine());
         dp = new int[1000000];
         dp[0] = 1;
