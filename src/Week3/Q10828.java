@@ -21,29 +21,31 @@ public class Q10828 {
             {
                 case "push" :
                 {
-                    stk.push(Integer.parseInt(st.nextToken()));
+                    push(Integer.parseInt(st.nextToken()));
                     break;
                 }
                 case "pop" :
                 {
-                    stk.pop();
+                    pop();
                     break;
                 }
                 case "size" :
                 {
-                    stk.size();
+                    sb.append(stk.size());
+                    sb.append("\n");
                     break;
                 }
                 case "empty" :
                 {
-                    stk.isEmpty();
+                    empty();
                     break;
                 }
-         /*       case "top" :
+                case "top" :
                 {
-                    stk.top();
+                    top();
+                    break;
                 }
-         */
+
             }
         } //end
         System.out.print(sb.toString());
@@ -59,10 +61,17 @@ public class Q10828 {
             sb.append("-1\n");
             return;
         }
-        int idx = stk.size()-1;
-        sb.append(stk.get(idx));
+        sb.append(stk.removeLast());
         sb.append("\n");
-        stk.remove(idx);
+    }
+    static void empty()
+    {
+        if(stk.isEmpty())
+        {
+            sb.append("1\n");
+            return;
+        }
+        sb.append("0\n");
     }
     static void top()
     {
@@ -71,8 +80,7 @@ public class Q10828 {
             sb.append("-1\n");
             return;
         }
-        int idx = stk.size()-1;
-        sb.append(stk.get(idx));
+        sb.append(stk.getLast());
         sb.append("\n");
     }
 }
