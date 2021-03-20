@@ -26,7 +26,7 @@ public class Q1992 {
     }
     static void quad(int row, int col, int size)
     {
-        if(check(row,col,size))
+        if(checkMap(row,col,size))
         {
             sb.append(map[row][col]);
         }
@@ -41,7 +41,7 @@ public class Q1992 {
             sb.append(")");
         }
     }
-    static boolean check(int row, int col, int size)
+    static boolean checkMap(int row, int col, int size)
     {
         int tmp = map[row][col];
         for(int i = row; i < row+size; ++i)
