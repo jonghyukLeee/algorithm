@@ -6,32 +6,31 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class Q1655 {
-    static ArrayList<Integer> al;
+    static PriorityQueue<Integer> minQ;
+    static PriorityQueue<Integer> maxQ;
     static StringBuilder sb;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         sb = new StringBuilder();
         int t = Integer.parseInt(br.readLine());
-        al = new ArrayList<Integer>();
-        int tmp,size;
+        minQ = new PriorityQueue<Integer>(Collections.reverseOrder());
+        maxQ = new PriorityQueue<Integer>();
+        int tmp;
         while(t-- > 0)
         {
             tmp = Integer.parseInt(br.readLine());
-            al.add(tmp);
-            Collections.sort(al);
-            size = al.size();
-            if(size % 2 == 0)
+            minQ.add(tmp);
+            if(!maxQ.isEmpty())
             {
-                int n1 = al.get(size/2), n2 = al.get((size/2)-1);
-                sb.append(Math.min(n1,n2));
-                sb.append("\n");
-            }
-            else
-            {
-                sb.append(al.get(size/2));
-                sb.append("\n");
+                if(minQ.peek() > maxQ.peek())
+                {
+                    int tmpQ = minQ.poll();
+                    minQ.add(maxQ.poll());
+                    maxQ.add(tmpQ);
+                }
             }
         }
         System.out.print(sb.toString());
