@@ -3,9 +3,7 @@ package Week4;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class Q1655 {
@@ -16,22 +14,26 @@ public class Q1655 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         sb = new StringBuilder();
         int t = Integer.parseInt(br.readLine());
-        minQ = new PriorityQueue<Integer>(Collections.reverseOrder());
-        maxQ = new PriorityQueue<Integer>();
-        int tmp;
+        minQ = new PriorityQueue<>();
+        maxQ = new PriorityQueue<>(Collections.reverseOrder());
+        int tmp,tmpQ;
         while(t-- > 0)
         {
             tmp = Integer.parseInt(br.readLine());
-            minQ.add(tmp);
-            if(!maxQ.isEmpty())
+            if(maxQ.size() == minQ.size()) maxQ.add(tmp);
+            else minQ.add(tmp);
+
+            if(!minQ.isEmpty() && !maxQ.isEmpty())
             {
-                if(minQ.peek() > maxQ.peek())
+                if(maxQ.peek() > minQ.peek())
                 {
-                    int tmpQ = minQ.poll();
+                    tmpQ = minQ.poll();
                     minQ.add(maxQ.poll());
                     maxQ.add(tmpQ);
                 }
             }
+            sb.append(maxQ.peek());
+            sb.append("\n");
         }
         System.out.print(sb.toString());
     }
