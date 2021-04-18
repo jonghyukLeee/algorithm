@@ -4,18 +4,33 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 
 public class Q2108 {
     static ArrayList<Integer> al;
+    static HashMap<Integer,Integer> hm;
+    static int min,max;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int t = Integer.parseInt(br.readLine());
         al = new ArrayList<>();
+        hm = new HashMap<>();
         for(int i = 0; i < t; ++i)
         {
-            al.add(Integer.parseInt(br.readLine()));
+            int tmp = Integer.parseInt(br.readLine());
+            al.add(tmp);
+
+            try{    // if랑 속도비교 해보기
+                hm.replace(tmp,hm.get(tmp)+1);
+            }catch(NullPointerException e)
+            {
+                hm.put(tmp,0);
+            }
         }
+        Collections.sort(al,Collections.reverseOrder());
+
         for(int i = 1; i < 5; ++i)
         {
             System.out.println(func(i));
@@ -36,7 +51,6 @@ public class Q2108 {
             }
             case 2: // 중앙
             {
-                Collections.sort(al);
                 return al.get(al.size()/2);
             }
             case 3: // 최빈
@@ -45,7 +59,7 @@ public class Q2108 {
             }
             case 4: // 최댓값 - 최솟값
             {
-
+                return Collections.max(al) - Collections.min(al);
             }
             default: return -1;
         }
