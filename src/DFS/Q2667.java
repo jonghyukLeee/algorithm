@@ -4,11 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Q2667 {
     static int apart;
     static int [][] map;
+    static int [] arr;
     static boolean [][] isVis;
     static int [] dx = {0,0,1,-1};
     static int [] dy = {1,-1,0,0};
@@ -16,6 +18,7 @@ public class Q2667 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int size = Integer.parseInt(br.readLine());
         String tmpStr;
+        arr = new int[10000];
         apart = 0;
         ArrayList<Integer> al = new ArrayList<>();
         map = new int[size][size];
@@ -36,19 +39,18 @@ public class Q2667 {
             {
                 if(!isVis[i][j] && map[i][j] == 1)
                 {
-                    al.add(dfs(i,j,1));
                     apart++;
                 }
             }
         }
-        Collections.sort(al);
+        Arrays.sort(arr);
         System.out.println(apart);
-        for(Integer i : al)
+        for(int i = 0; i < apart; ++i)
         {
-            System.out.println(i);
+            System.out.println(arr[i]);
         }
     }
-    static int dfs(int i, int j, int cnt)
+    static void dfs(int i, int j, int cnt)
     {
         for(int idx = 0; idx < 4; ++idx)
         {
@@ -58,9 +60,9 @@ public class Q2667 {
             if(!isValid(x,y)) continue;
             if(isVis[x][y]) continue;
             isVis[x][y] = true;
+            arr[apart]++;
             dfs(x,y,cnt+1);
         }
-        return cnt;
     }
     static boolean isValid(int x, int y)
     {
