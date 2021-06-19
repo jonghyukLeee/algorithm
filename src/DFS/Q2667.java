@@ -8,9 +8,9 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Q2667 {
-    static int apart;
     static int [][] map;
-    static int [] arr;
+    static ArrayList<Integer> al;
+    static int cur_cnt;
     static boolean [][] isVis;
     static int [] dx = {0,0,1,-1};
     static int [] dy = {1,-1,0,0};
@@ -18,9 +18,7 @@ public class Q2667 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int size = Integer.parseInt(br.readLine());
         String tmpStr;
-        arr = new int[10000];
-        apart = 0;
-        ArrayList<Integer> al = new ArrayList<>();
+        al = new ArrayList<>();
         map = new int[size][size];
         isVis = new boolean[size][size];
         for(int i = 0; i < size; ++i)
@@ -39,29 +37,28 @@ public class Q2667 {
             {
                 if(!isVis[i][j] && map[i][j] == 1)
                 {
-                    apart++;
+                    isVis[i][j] = true;
+                    cur_cnt = 1;
+                    dfs(i,j);
+                    al.add(cur_cnt);
                 }
             }
         }
-        Arrays.sort(arr);
-        System.out.println(apart);
-        for(int i = 0; i < apart; ++i)
-        {
-            System.out.println(arr[i]);
-        }
+        Collections.sort(al);
+        System.out.println(al.size());
+        for(Integer i : al) System.out.println(i);
     }
-    static void dfs(int i, int j, int cnt)
+    static void dfs(int i, int j)
     {
         for(int idx = 0; idx < 4; ++idx)
         {
             int x = i + dx[idx];
             int y = j + dy[idx];
-
             if(!isValid(x,y)) continue;
-            if(isVis[x][y]) continue;
+            if(isVis[x][y] || map[x][y] == 0) continue;
+            cur_cnt++;
             isVis[x][y] = true;
-            arr[apart]++;
-            dfs(x,y,cnt+1);
+            dfs(x,y);
         }
     }
     static boolean isValid(int x, int y)
