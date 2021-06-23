@@ -14,8 +14,8 @@ public class Q11724 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
         st = new StringTokenizer(br.readLine());
-        parents = new int[Integer.parseInt(st.nextToken())];
-        for(int i = 0; i < parents.length; ++i)
+        parents = new int[Integer.parseInt(st.nextToken())+1];
+        for(int i = 1; i < parents.length; ++i)
         {
             parents[i] = i;
         }
@@ -38,15 +38,21 @@ public class Q11724 {
 
         for(int i = 0; i < input.length; ++i)
         {
-            if(getParent(input[i][1]) == parents[i])
-            {
-                parents[i] = getParent(i);
-            }
+            int fst = input[i][0];
+            int sec = input[i][1];
+
+            parents[sec] = getParent(fst);
         }
+        int cnt = 0;
+        for(int i = 1; i < parents.length; ++i)
+        {
+            if(i == parents[i]) cnt++;
+        }
+        System.out.print(cnt);
     }
     static int getParent(int child)
     {
         if(parents[child] == child) return child;
-        return getParent(getParent(child));
+        return getParent(parents[child]);
     }
 }
