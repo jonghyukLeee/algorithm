@@ -65,7 +65,6 @@ public class Q2468 {
     }
     static boolean isValid(int x, int y)
     {
-        if(x < 0 || y < 0 || x >= map.length || y >= map[0].length) return false;
-        return true;
+        return x >= 0 && y >= 0 && x < map.length && y < map[0].length;
     }
 }
