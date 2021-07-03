@@ -59,6 +59,7 @@ public class Q16236 {
             if(map[cur_x][cur_y] > 0 && map[cur_x][cur_y] < tmp.size)
             {
                 answer += tmp.time;
+                tmp.time = 0;
                 map[cur_x][cur_y] = 0;
                 eat_cnt++;
                 if(eat_cnt == tmp.size)
