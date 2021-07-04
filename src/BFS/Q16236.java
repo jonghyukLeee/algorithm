@@ -26,6 +26,7 @@ public class Q16236 {
     static Queue<Shark> q;
     static int [] dx = {-1,0,0,1};
     static int [] dy = {0,-1,1,0};
+    static boolean flag;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -67,6 +68,12 @@ public class Q16236 {
                     tmp.size++;
                     eat_cnt = 0;
                 }
+                flag = true;
+            }
+            if(flag)
+            {
+                if(!hasPrey(tmp.size)) break;
+                flag = false;
             }
 
             for(int idx = 0; idx < 4; ++idx)
@@ -82,5 +89,16 @@ public class Q16236 {
     static boolean isValid(int x, int y)
     {
         return x >= 0 && y >= 0 && x < map.length && y < map[0].length;
+    }
+    static boolean hasPrey(int size)
+    {
+        for(int [] i : map)
+        {
+            for(int j : i)
+            {
+                if(j > 0 && j < size) return true;
+            }
+        }
+        return false;
     }
 }
