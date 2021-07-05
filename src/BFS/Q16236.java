@@ -20,6 +20,7 @@ class Shark
 }
 public class Q16236 {
     static int [][] map;
+    static int n;
     static boolean [][] isVis;
     static int answer = 0;
     static int eat_cnt = 0;
@@ -31,7 +32,7 @@ public class Q16236 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
-        int n = Integer.parseInt(br.readLine());
+        n = Integer.parseInt(br.readLine());
         map = new int[n][n];
         isVis = new boolean[n][n];
 
@@ -76,8 +77,8 @@ public class Q16236 {
                 }
                 System.out.printf("%d,%d\n",cur_x,cur_y);
                 flag = true;
+                isVis = new boolean[n][n];
             }
-
 
             for(int idx = 0; idx < 4; ++idx)
             {
