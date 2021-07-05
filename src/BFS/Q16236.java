@@ -57,6 +57,12 @@ public class Q16236 {
             int cur_y = tmp.y;
             isVis[cur_x][cur_y] = true;
 
+            if(flag)
+            {
+                if(!hasPrey(tmp.size)) break;
+                flag = false;
+            }
+
             if(map[cur_x][cur_y] > 0 && map[cur_x][cur_y] < tmp.size)
             {
                 answer += tmp.time;
@@ -68,13 +74,10 @@ public class Q16236 {
                     tmp.size++;
                     eat_cnt = 0;
                 }
+                System.out.printf("%d,%d\n",cur_x,cur_y);
                 flag = true;
             }
-            if(flag)
-            {
-                if(!hasPrey(tmp.size)) break;
-                flag = false;
-            }
+
 
             for(int idx = 0; idx < 4; ++idx)
             {
