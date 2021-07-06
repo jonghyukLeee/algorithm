@@ -3,9 +3,7 @@ package BFS;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 class Shark
 {
@@ -17,8 +15,19 @@ class Shark
         this.time = time;
     }
 }
+class Prey
+{
+    int x,y,dist;
+    public Prey(int x,int y, int dist)
+    {
+        this.x = x;
+        this.y = y;
+        this.dist = dist;
+    }
+}
 public class Q16236 {
     static int [][] map;
+    static ArrayList<Prey> prey;
     static int n;
     static boolean [][] isVis;
     static int answer = 0;
@@ -35,6 +44,7 @@ public class Q16236 {
         n = Integer.parseInt(br.readLine());
         map = new int[n][n];
         isVis = new boolean[n][n];
+        prey = new ArrayList<>();
 
         for(int i = 0; i < n; ++i)
         {
@@ -45,17 +55,44 @@ public class Q16236 {
                 if(tmp == 9)
                 {
                     cur_loc = new Shark(i,j,0);
+                    isVis[i][j] = true;
                     tmp = 0;
                 }
                 map[i][j] = tmp;
             }
         }
 
-        while(true)
-        {
-            if(!hasPrey(shark_size)) break;
-            isVis = new boolean[n][n];
+       while(true)
+       {
             bfs(cur_loc);
+            if(!prey.isEmpty())
+            {
+                prey.sort(new Comparator<Prey>() {
+                    @Override
+                    public int compare(Prey o1, Prey o2) {
+                        if (o1.dist == o2.dist) {
+                            if (o1.x == o2.x) {
+                                return o1.y - o2.y;
+                            }
+                            return o1.x - o2.x;
+                        }
+                        return o1.dist - o2.dist;
+                    }
+                });
+                Prey tmp = prey.get(0);
+                prey.clear();
+                map[tmp.x][tmp.y] = 0;
+                eat_cnt++;
+                if(eat_cnt == shark_size)
+                {
+                    shark_size++;
+                    eat_cnt = 0;
+                }
+                answer += tmp.dist;
+                cur_loc = new Shark(tmp.x,tmp.y,answer);
+                isVis = new boolean[n][n];
+            }
+            else break;
         }
         System.out.print(answer);
     }
@@ -71,21 +108,11 @@ public class Q16236 {
             Shark tmp = q.poll();
             int cur_x = tmp.x;
             int cur_y = tmp.y;
-            isVis[cur_x][cur_y] = true;
 
             if(map[cur_x][cur_y] > 0 && map[cur_x][cur_y] < shark_size)
             {
-                answer += tmp.time;
-               //System.out.printf("cur loc : (%d, %d) size = %d time = %d \n",cur_x,cur_y,shark_size,answer);
-                map[cur_x][cur_y] = 0;
-                eat_cnt++;
-                if(eat_cnt == shark_size)
-                {
-                    shark_size++;
-                    eat_cnt = 0;
-                }
-                cur_loc = new Shark(cur_x,cur_y,answer);
-                return;
+                prey.add(new Prey(cur_x,cur_y,tmp.time));
+                continue;
             }
 
             for(int idx = 0; idx < 4; ++idx)
@@ -93,6 +120,7 @@ public class Q16236 {
                 int x = cur_x + dx[idx];
                 int y = cur_y + dy[idx];
                 if(!isValid(x,y) || isVis[x][y] || map[x][y] > shark_size) continue;
+                isVis[x][y] = true;
                 q.add(new Shark(x,y,tmp.time+1));
             }
         }
@@ -100,16 +128,5 @@ public class Q16236 {
     static boolean isValid(int x, int y)
     {
         return x >= 0 && y >= 0 && x < map.length && y < map[0].length;
-    }
-    static boolean hasPrey(int size)
-    {
-        for(int [] i : map)
-        {
-            for(int j : i)
-            {
-                if(j > 0 && j < size) return true;
-            }
-        }
-        return false;
     }
 }
