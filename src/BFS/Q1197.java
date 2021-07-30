@@ -16,7 +16,7 @@ class Point
     }
 }
 public class Q1197 {
-    static ArrayList<Point> [] al;
+    static ArrayList<ArrayList<Point>> al;
     static boolean [] isVis;
     static int v;
     static int answer = Integer.MAX_VALUE;
@@ -26,11 +26,11 @@ public class Q1197 {
         v = Integer.parseInt(st.nextToken());
         int e = Integer.parseInt(st.nextToken());
 
-        al = new ArrayList[v+1];
+        al = new ArrayList<>();
 
-        for(int i = 1; i < al.length; ++i)
+        for(int i = 0; i <= v; ++i)
         {
-            al[i] = new ArrayList<>();
+            al.add(new ArrayList<>());
         }
 
         for(int i = 0; i < e; ++i)
@@ -39,8 +39,8 @@ public class Q1197 {
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
             int c = Integer.parseInt(st.nextToken());
-            al[a].add(new Point(b,c));
-            al[b].add(new Point(a,c));
+            al.get(a).add(new Point(b,c));
+            al.get(b).add(new Point(a,c));
         }
 
         for(int i = 1; i <= v; ++i)
@@ -60,13 +60,12 @@ public class Q1197 {
             int cur = q.poll();
             isVis[cur] = true;
             Point tmpPoint = new Point(0,Integer.MAX_VALUE);
-
-            for(Point tmp : al[cur])
+            for(Point curPoint : al.get(cur))
             {
-                if(isVis[tmp.end]) continue;
-                if(tmpPoint.weight > tmp.weight)
+                if(isVis[curPoint.end]) continue;
+                if(tmpPoint.weight > curPoint.weight)
                 {
-                    tmpPoint = new Point(tmp.end,tmp.weight);
+                    tmpPoint = new Point(curPoint.end,curPoint.weight);
                 }
             }
             if(tmpPoint.weight == Integer.MAX_VALUE) break;
