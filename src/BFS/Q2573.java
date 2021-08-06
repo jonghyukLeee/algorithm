@@ -81,6 +81,9 @@ public class Q2573 {
             }
         }
     }
+    // 물 만났을시 -1 까지 완료 , 전체 배열 체크후 방문하지않았지만 0보다 큰 빙하를 발견하면 분리됐다고 판단하고
+    // 시간값을 리턴. (시간체크하는 변수도 아직)
+
     static boolean isValid(int x, int y)
     {
         return x >= 0 && y >= 0 && x < map.length && y < map[0].length;
