@@ -20,6 +20,10 @@ class Land
 }
 public class Q2589 {
     static char [][] map;
+    static boolean [][] isVis;
+    static int maxVal = Integer.MIN_VALUE;
+    static int [] dx = {0,0,-1,1};
+    static int [] dy = {-1,1,0,0};
     static Queue<Land> q;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -47,11 +51,39 @@ public class Q2589 {
                 if(map[i][j] == 'L')
                 {
                     q.add(new Land(i,j,0));
-                    break;
+                    isVis = new boolean[n][m];
+                    isVis[i][j] = true;
+                    bfs();
                 }
             }
         }
+        System.out.print(maxVal);
+    }
+    static void bfs()
+    {
+        while(!q.isEmpty())
+        {
+            Land tmp = q.poll();
 
+            for(int i = 0; i < 4; ++i)
+            {
+                int x = tmp.x + dx[i];
+                int y = tmp.y + dy[i];
+
+                if(!isValid(x,y) || isVis[x][y] || map[x][y] == 'W') continue;
+                isVis[x][y] = true;
+                q.add(new Land(x,y,tmp.time+1));
+            }
+            if(q.isEmpty())
+            {
+                maxVal = Math.max(maxVal,tmp.time);
+            }
+        }
+
+    }
+    static boolean isValid(int x, int y)
+    {
+        return x >= 0 && y >= 0 && x < map.length && y < map[0].length;
     }
 
 }
