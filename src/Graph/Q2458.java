@@ -24,16 +24,15 @@ public class Q2458 {
             students[fst][sec] = true;
         }
 
-        for(int i = 1; i <= n; ++i) // 거쳐가는 경로
+        for(int i = 1; i <= n; ++i)
         {
-            for(int j = 1; j <= n; ++j) // 출발지점
+            for(int j = 1; j <= n; ++j)
             {
-                for(int k = 1; k <= n; ++k) //도착지점
+                for(int k = 1; k <= n; ++k)
                 {
                     if(i == j || j == k || i == k) continue;
                     if(!students[j][k])
                     {
-                        // j -> k로 이동하는경로와  j -> i -> k로 i를 경유해 가는 경로를 비교하여 값을 업데이트.
                         if(students[j][i] && students[i][k]) students[j][k] = true;
                     }
                 }
