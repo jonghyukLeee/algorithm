@@ -5,21 +5,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-class Point
+class Node implements Comparable<Node>
 {
-    int end, weight;
+    int start, end, weight;
 
-    public Point(int end, int weight)
+    public Node(int start, int end, int weight)
     {
+        this.start = start;
         this.end = end;
         this.weight = weight;
     }
+
+    @Override
+    public int compareTo(Node o) {
+        return this.weight - o.weight;
+    }
 }
 public class Q1197 {
-    static ArrayList<ArrayList<Point>> al;
-    static boolean [] isVis;
+    static ArrayList<Node> al;
+    static int [] parents;
     static int v;
-    static int answer = Integer.MAX_VALUE;
+    static int answer;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -27,11 +33,8 @@ public class Q1197 {
         int e = Integer.parseInt(st.nextToken());
 
         al = new ArrayList<>();
-
-        for(int i = 0; i <= v; ++i)
-        {
-            al.add(new ArrayList<>());
-        }
+        parents = new int[v+1];
+        for(int i = 1; i <= v; ++i) parents[i] = i;
 
         for(int i = 0; i < e; ++i)
         {
@@ -39,39 +42,25 @@ public class Q1197 {
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
             int c = Integer.parseInt(st.nextToken());
-            al.get(a).add(new Point(b,c));
-            al.get(b).add(new Point(a,c));
+            al.add(new Node(a,b,c));
         }
 
-        for(int i = 1; i <= v; ++i)
+        for(Node cur : al)
         {
-            isVis = new boolean[v+1];
-            dfs(i);
+            if(!(getParent(cur.start) == getParent(cur.end)))
+            {
+                union(cur.start,cur.end);
+                answer += cur.weight;
+            }
         }
         System.out.print(answer);
     }
-    static void dfs(int start)
+    static int getParent(int child)
     {
-        Queue<Integer> q = new LinkedList<>();
-        q.add(start);
-        int tmpAnswer = 0;
-        while(!q.isEmpty())
-        {
-            int cur = q.poll();
-            isVis[cur] = true;
-            Point tmpPoint = new Point(0,Integer.MAX_VALUE);
-            for(Point curPoint : al.get(cur))
-            {
-                if(isVis[curPoint.end]) continue;
-                if(tmpPoint.weight > curPoint.weight)
-                {
-                    tmpPoint = new Point(curPoint.end,curPoint.weight);
-                }
-            }
-            if(tmpPoint.weight == Integer.MAX_VALUE) break;
-            tmpAnswer += tmpPoint.weight;
-            q.add(tmpPoint.end);
-        }
-        answer = Math.min(answer,tmpAnswer);
+        return parents[child] == child ? child : getParent(parents[child]);
+    }
+    static void union(int p, int c)
+    {
+        parents[c] = getParent(parents[p]);
     }
 }
