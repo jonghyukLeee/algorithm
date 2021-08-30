@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-class Node implements Comparable<Node>
+class Node
 {
     int start, end, weight;
 
@@ -14,11 +14,6 @@ class Node implements Comparable<Node>
         this.start = start;
         this.end = end;
         this.weight = weight;
-    }
-
-    @Override
-    public int compareTo(Node o) {
-        return this.weight - o.weight;
     }
 }
 public class Q1197 {
@@ -44,12 +39,20 @@ public class Q1197 {
             int c = Integer.parseInt(st.nextToken());
             al.add(new Node(a,b,c));
         }
-
+        al.sort(new Comparator<Node>() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                return o1.weight - o2.weight;
+            }
+        });
+        int cnt = 0;
         for(Node cur : al)
         {
+            if(cnt == v-1) break;
             if(!(getParent(cur.start) == getParent(cur.end)))
             {
                 union(cur.start,cur.end);
+                cnt++;
                 answer += cur.weight;
             }
         }
@@ -57,10 +60,14 @@ public class Q1197 {
     }
     static int getParent(int child)
     {
-        return parents[child] == child ? child : getParent(parents[child]);
+        if(parents[child] == child) return child;
+        else
+        {
+            return parents[child] = getParent(parents[child]);
+        }
     }
     static void union(int p, int c)
     {
-        parents[c] = getParent(parents[p]);
+        parents[getParent(c)] = getParent(p);
     }
 }
