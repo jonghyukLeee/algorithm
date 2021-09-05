@@ -13,7 +13,16 @@ public class Q9251 {
 
         String [] fst = tmp1.split("");
         String [] sec = tmp2.split("");
-        dp = new int[fst.length][fst.length];
+        dp = new int[fst.length+1][sec.length+1];
 
+        for(int i = 1; i < dp.length; ++i)
+        {
+            for(int j = 1; j < dp[0].length; ++j)
+            {
+                if(fst[i-1].equals(sec[j-1])) dp[i][j] = dp[i-1][j-1] + 1;
+                else dp[i][j] = Math.max(dp[i-1][j],dp[i][j-1]);
+            }
+        }
+        System.out.print(dp[fst.length][sec.length]);
     }
 }
