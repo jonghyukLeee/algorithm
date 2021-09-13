@@ -3,6 +3,8 @@ package Etc;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 class Dice
@@ -57,7 +59,6 @@ public class Q14499 {
         dice = new Dice(startX,startY);
 
         map = new int[n][m];
-
         for(int i = 0; i < n; ++i)
         {
             st = new StringTokenizer(br.readLine());
