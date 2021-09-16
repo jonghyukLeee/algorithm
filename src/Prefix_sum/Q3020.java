@@ -31,9 +31,19 @@ public class Q3020 {
             top[i] += top[i+1];
         }
 
-        Arrays.sort(bottom);
-        Arrays.sort(top);
+        int min = Integer.MAX_VALUE;
+        int cnt = 0;
+        for(int i = 1; i <= h; ++i)
+        {
+            int total = bottom[i] + top[h-i+1];
 
-        System.out.print(Math.max(bottom[h],top[h]));
+            if(min > total)
+            {
+                min = total;
+                cnt = 1;
+            }
+            else if(min == total) cnt++;
+        }
+        System.out.printf("%d %d",min,cnt);
     }
 }
