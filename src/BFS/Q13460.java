@@ -23,8 +23,8 @@ class Ball
 public class Q13460 {
     static int n,m;
     static char [][] map;
-    static int [] dx = {0,0,-1,1};
-    static int [] dy = {1,-1,0,0};
+    static int [] dx = {-1,1,0,0};
+    static int [] dy = {0,0,-1,1};
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -56,27 +56,98 @@ public class Q13460 {
         Queue<Ball> q= new LinkedList<>();
         q.add(new Ball(bx,by,rx,ry,0));
 
-        while(!q.isEmpty())
+        loop : while(!q.isEmpty())
         {
             Ball cur = q.poll();
-
             for(int i = 0; i < 4; ++i)
             {
                 int b_mx = cur.bx;
                 int b_my = cur.by;
-                while(!isValid(b_mx,b_my) || !(map[b_mx][b_my] == '.'))
+                boolean [] isExit = new boolean[2];
+                while(true)
                 {
                     b_mx += dx[i];
                     b_my += dy[i];
+                    if(!isValid(b_mx,b_my) || map[b_mx][b_my] == '#')
+                    {
+                        b_mx -= dx[i];
+                        b_my -= dy[i];
+                        break;
+                    }
+                    if(map[b_mx][b_my] == '0')
+                    {
+                        isExit[0] = true;
+                        break;
+                    }
                 }
                 int r_mx = cur.rx;
                 int r_my = cur.ry;
-                while(!isValid(r_mx,r_my)) // 0을 만났을 경우 추가해야함
+                while(true) // 0을 만났을 경우 추가해야함
                 {
                     r_mx += dx[i];
                     r_my += dy[i];
+                    if(!isValid(r_mx,r_my) || map[b_mx][b_my] == '#')
+                    {
+                        r_mx -= dx[i];
+                        r_my -= dy[i];
+                        break;
+                    }
+                    if(map[r_mx][r_my] == '0')
+                    {
+                        isExit[1] = true;
+                        break;
+                    }
                 }
-                //이동 전과 후와 같을경우 그냥 컨티뉴, 아닐경우는 각 좌표마다 -1해서 큐에 add
+                if(b_mx == cur.bx && b_my == cur.by && r_mx == cur.rx && r_my == cur.ry) continue;
+                if(isExit[1])
+                {
+                    if(isExit[0])
+                    {
+                        if(i == 0)
+                        {
+                            if(cur.bx < cur.rx) continue;
+                        }
+                        else if(i == 1)
+                        {
+                            if(cur.bx > cur.rx) continue;
+                        }
+                        else if(i == 2)
+                        {
+                            if(cur.by < cur.ry) continue;
+                        }
+                        else
+                        {
+                            if(cur.by > cur.ry) continue;
+                        }
+                    }
+                    System.out.print(cur.cnt);
+                    break loop;
+                }
+                else if(isExit[0]) continue;
+                if(b_mx == r_mx && b_my == r_my)
+                {
+                    if(i == 0)
+                    {
+                        if(cur.bx < cur.rx) r_mx += 1;
+                        else b_mx += 1;
+                    }
+                    else if(i == 1)
+                    {
+                        if(cur.bx < cur.rx) b_mx -= 1;
+                        else r_mx -= 1;
+                    }
+                    else if(i == 2)
+                    {
+                        if(cur.by < cur.ry) r_my += 1;
+                        else b_my += 1;
+                    }
+                    else
+                    {
+                        if(cur.by < cur.ry) b_my -= 1;
+                        else r_my -= 1;
+                    }
+                }
+                q.add(new Ball(b_mx,b_my,r_mx,r_my,cur.cnt+1));
             }
         }
 
