@@ -23,6 +23,7 @@ class Ball
 public class Q13460 {
     static int n,m;
     static char [][] map;
+    static boolean [][][][] isVis;
     static int [] dx = {-1,1,0,0};
     static int [] dy = {0,0,-1,1};
     public static void main(String[] args) throws IOException {
@@ -52,13 +53,20 @@ public class Q13460 {
                 }
             }
         }
-
+        isVis = new boolean[n][m][n][m];
         Queue<Ball> q= new LinkedList<>();
-        q.add(new Ball(bx,by,rx,ry,0));
-
+        q.add(new Ball(bx,by,rx,ry,1));
+        boolean exitFlag = false;
         loop : while(!q.isEmpty())
         {
             Ball cur = q.poll();
+            if(cur.cnt > 10)
+            {
+                System.out.print("-1");
+                return;
+            }
+            if(isVis[cur.bx][cur.by][cur.rx][cur.ry]) continue;
+
             for(int i = 0; i < 4; ++i)
             {
                 int b_mx = cur.bx;
@@ -74,7 +82,7 @@ public class Q13460 {
                         b_my -= dy[i];
                         break;
                     }
-                    if(map[b_mx][b_my] == '0')
+                    if(map[b_mx][b_my] == 'O')
                     {
                         isExit[0] = true;
                         break;
@@ -82,17 +90,17 @@ public class Q13460 {
                 }
                 int r_mx = cur.rx;
                 int r_my = cur.ry;
-                while(true) // 0을 만났을 경우 추가해야함
+                while(true)
                 {
                     r_mx += dx[i];
                     r_my += dy[i];
-                    if(!isValid(r_mx,r_my) || map[b_mx][b_my] == '#')
+                    if(!isValid(r_mx,r_my) || map[r_mx][r_my] == '#')
                     {
                         r_mx -= dx[i];
                         r_my -= dy[i];
                         break;
                     }
-                    if(map[r_mx][r_my] == '0')
+                    if(map[r_mx][r_my] == 'O')
                     {
                         isExit[1] = true;
                         break;
@@ -101,27 +109,13 @@ public class Q13460 {
                 if(b_mx == cur.bx && b_my == cur.by && r_mx == cur.rx && r_my == cur.ry) continue;
                 if(isExit[1])
                 {
-                    if(isExit[0])
+                    if(isExit[0]) continue;
+                    else
                     {
-                        if(i == 0)
-                        {
-                            if(cur.bx < cur.rx) continue;
-                        }
-                        else if(i == 1)
-                        {
-                            if(cur.bx > cur.rx) continue;
-                        }
-                        else if(i == 2)
-                        {
-                            if(cur.by < cur.ry) continue;
-                        }
-                        else
-                        {
-                            if(cur.by > cur.ry) continue;
-                        }
+                        System.out.print(cur.cnt);
+                        exitFlag = true;
+                        break loop;
                     }
-                    System.out.print(cur.cnt);
-                    break loop;
                 }
                 else if(isExit[0]) continue;
                 if(b_mx == r_mx && b_my == r_my)
@@ -149,7 +143,9 @@ public class Q13460 {
                 }
                 q.add(new Ball(b_mx,b_my,r_mx,r_my,cur.cnt+1));
             }
+            isVis[cur.bx][cur.by][cur.rx][cur.ry] = true;
         }
+        if(!exitFlag) System.out.print("-1");
 
     }
     static boolean isValid(int x, int y)
