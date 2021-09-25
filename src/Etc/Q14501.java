@@ -3,6 +3,7 @@ package Etc;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 class Counsel
@@ -35,13 +36,17 @@ public class Q14501 {
         for(int i = 0; i < N; ++i)
         {
             Counsel cur = counsel[i];
-            for(int j = i; j < N; ++j)
+            int next = cur.time + i;
+
+            if(next < N)
             {
-                int next = cur.time + j;
-                if(next < N)
-                {
-                }
+                dp[next] = Math.max((dp[i] + cur.cost),dp[next]);
             }
         }
+        for(int i : dp) System.out.print(i+" ");
+        System.out.println();
+        Arrays.sort(dp);
+
+        System.out.print(dp[dp.length-1]);
     }
 }
