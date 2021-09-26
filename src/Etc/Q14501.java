@@ -23,7 +23,7 @@ public class Q14501 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int N = Integer.parseInt(br.readLine());
         counsel = new Counsel[N];
-        dp = new int[N];
+        dp = new int[N+1];
         StringTokenizer st;
         for(int i = 0; i < N; ++i)
         {
@@ -38,15 +38,13 @@ public class Q14501 {
             Counsel cur = counsel[i];
             int next = cur.time + i;
 
-            if(next < N)
+            if(next <= N)
             {
                 dp[next] = Math.max((dp[i] + cur.cost),dp[next]);
             }
+            dp[i+1] = Math.max(dp[i+1],dp[i]);
         }
-        for(int i : dp) System.out.print(i+" ");
-        System.out.println();
         Arrays.sort(dp);
-
         System.out.print(dp[dp.length-1]);
     }
 }
