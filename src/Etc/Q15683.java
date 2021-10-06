@@ -65,7 +65,10 @@ public class Q15683 {
     }
     static void scan()
     {
+        for(int i = 1; i < 6; ++i)
+        {
 
+        }
     }
     static boolean isValid(int x, int y)
     {
