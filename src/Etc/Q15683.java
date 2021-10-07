@@ -3,7 +3,6 @@ package Etc;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -23,6 +22,8 @@ public class Q15683 {
     static int [][] map;
     static List<Cam> tv_loc;
     static List<String> [] mv_list;
+    static int [] dx = {-1,0,1,0};
+    static int [] dy = {0,1,0,-1};
     static boolean [] tv;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -67,7 +68,10 @@ public class Q15683 {
     {
         for(int i = 1; i < 6; ++i)
         {
+            if(tv[i])
+            {
 
+            }
         }
     }
     static boolean isValid(int x, int y)
