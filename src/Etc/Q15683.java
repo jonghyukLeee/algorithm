@@ -9,10 +9,11 @@ import java.util.StringTokenizer;
 
 class Cam
 {
-    int x,y;
+    int num,x,y;
 
-    public Cam(int x, int y)
+    public Cam(int num, int x, int y)
     {
+        this.num = num;
         this.x = x;
         this.y = y;
     }
@@ -45,7 +46,7 @@ public class Q15683 {
                 map[i][j] = Integer.parseInt(st.nextToken());
                 if (map[i][j] > 0 && map[i][j] < 6)
                 {
-                    tv_loc.add(new Cam(i, j));
+                    tv_loc.add(new Cam(map[i][j],i, j));
                     if (!tv[map[i][j]]) tv[map[i][j]] = true;
                 }
                 else if (map[i][j] == 0) zero_cnt++;
@@ -66,13 +67,7 @@ public class Q15683 {
     }
     static void scan()
     {
-        for(int i = 1; i < 6; ++i)
-        {
-            if(tv[i])
-            {
 
-            }
-        }
     }
     static boolean isValid(int x, int y)
     {
