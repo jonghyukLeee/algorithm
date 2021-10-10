@@ -65,10 +65,7 @@ public class Q15683 {
         }
 
     }
-    static void scan()
-    {
 
-    }
     static boolean isValid(int x, int y)
     {
         return x >= 0 && y >= 0 && x < N && y < M;
