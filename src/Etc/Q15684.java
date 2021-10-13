@@ -13,9 +13,9 @@ public class Q15684 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-        int H = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        H = Integer.parseInt(st.nextToken());
 
         map = new int[H+1][N+1];
 
@@ -29,40 +29,38 @@ public class Q15684 {
             map[x][y+1] = -1;
         }
 
-        int [][] copy = new int[H+1][N+1];
         for(int i = 0; i < 4; ++i)
         {
-            for(int j = 0; j <= H; ++j)
-            {
-                System.arraycopy(map[j],0,copy[j],0,N+1);
-            }
-            if(dfs(1,1,0,i,copy))
-            {
-                answer = i;
-                break;
-            }
+            dfs(0,i);
         }
         System.out.print(answer);
     }
-    static boolean dfs(int x, int y,int cnt, int dest,int [][] copy)
+    static void dfs(int cnt, int dest)
     {
         if(cnt == dest)
         {
-            return play(copy);
+            if(play())
+            {
+                System.out.print(dest);
+                System.exit(0);
+            }
+            return;
         }
 
-        for(int i = x; i <= H; ++i)
+        for(int i = 1; i <= H; ++i) // 1 5
         {
-            for(int j = y; j < N; ++j)
+            for(int j = 1; j < N; ++j)
             {
-                if(copy[i][j] != 0 || copy[i][j+1] > 0) continue;
-                copy[i][j] = 1;
-                copy[i][j+1] = -1;
-                if(j+1 == N) dfs()
+                if(map[i][j] != 0 || map[i][j+1] > 0) continue;
+                map[i][j] = 1;
+                map[i][j+1] = -1;
+                dfs(cnt+1,dest);
+                map[i][j] = 0;
+                map[i][j+1] = 0;
             }
         }
     }
-    static boolean play(int [][] copy)
+    static boolean play()
     {
         boolean res = true;
         for(int i = 1; i <= N; ++i)
@@ -72,20 +70,15 @@ public class Q15684 {
 
             while(cur_x < H+1)
             {
-                if(copy[cur_x][cur_y] > 0)
+                if(map[cur_x][cur_y] > 0)
                 {
                     cur_y++;
-                    copy[cur_x][cur_y] = 0;
                 }
-                else if(copy[cur_x][cur_y] < 0)
+                else if(map[cur_x][cur_y] < 0)
                 {
                     cur_y--;
-                    copy[cur_x][cur_y] = 0;
                 }
-                else
-                {
-                    cur_x++;
-                }
+                cur_x++;
             }
             if(cur_y != i)
             {
