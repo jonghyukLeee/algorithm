@@ -110,6 +110,7 @@ public class Q21609 {
         int r_cnt = 0;
         int color = map[x][y];
         StringBuilder sb = new StringBuilder(x+" "+y);
+        StringBuilder rainbow = new StringBuilder();
         Queue<Block> q = new LinkedList<>();
         q.add(new Block(x,y,0,0,""));
 
@@ -125,6 +126,7 @@ public class Q21609 {
                 if(map[mx][my] == 0)
                 {
                     q.add(new Block(mx,my));
+                    rainbow.append(mx+" "+my+" ");
                     r_cnt++;
                 }
                 else if(map[mx][my] == color) q.add(new Block(mx,my));
@@ -138,6 +140,16 @@ public class Q21609 {
                 if(size >= 2)
                 {
                     pq.add(new Block(x,y,r_cnt,size,sb.toString()));
+                    if(r_cnt > 0)
+                    {
+                        StringTokenizer st = new StringTokenizer(rainbow.toString());
+                        while(st.hasMoreTokens())
+                        {
+                            int fst = Integer.parseInt(st.nextToken());
+                            int sec = Integer.parseInt(st.nextToken());
+                            visited[fst][sec] = false;
+                        }
+                    }
                 }
             }
         }
