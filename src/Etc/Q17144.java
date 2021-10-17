@@ -77,7 +77,8 @@ public class Q17144 {
             }
 
             //공기청정기
-
+            clean(true);
+            clean(false);
         }
     }
     static void clean(boolean flag)
