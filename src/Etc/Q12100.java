@@ -237,8 +237,6 @@ public class Q12100 {
                 }
             }
         }
-
-
         max_val = Math.max(tmp_val,max_val);
     }
     static boolean isValid(int x, int y)
