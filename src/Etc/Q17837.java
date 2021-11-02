@@ -61,7 +61,7 @@ public class Q17837 {
             for(int i = 1; i <= K; ++i)
             {
                 System.out.printf("move %d at (%d,%d) dir = %d\n",i,piece[i].x,piece[i].y,piece[i].dir);
-                flag = move(piece[i],i);
+                flag = next(piece[i],i);
                 if(flag) break loop;
                 for(int j = 0; j < N; ++j)
                 {
@@ -80,7 +80,7 @@ public class Q17837 {
         int answer = t == 1000 ? -1 : t;
         System.out.print(answer);
     }
-    static boolean move(Piece p,int n) // 블록 색깔별 모듈화 해야할듯.. 파란블록 방향전환떄문
+    static boolean next(Piece p,int n)
     {
         int cur_x = p.x;
         int cur_y = p.y;
@@ -96,7 +96,6 @@ public class Q17837 {
         }
         int mx = cur_x + dx[p.dir];
         int my = cur_y + dy[p.dir];
-        List<Integer> tmp_list = new ArrayList<>();
         int nextBlock = 2;
 
         if(isValid(mx,my)) nextBlock = map[mx][my].get(0);
@@ -113,15 +112,25 @@ public class Q17837 {
             my = cur_y + dy[dir];
 
             if(!isValid(mx,my) || map[mx][my].get(0) == 2) p.dir = dir;
-            else moveList(level,size,cur_x,cur_y,mx,my);
+            else move(map[mx][my].get(0),level,size,cur_x,cur_y,mx,my);
         }
-        else if(nextBlock == 0) // 흰색
+        else move(nextBlock,level,size,cur_x,cur_y,mx,my);
+        return map[mx][my].size() > 4; // 방향전환시 mx,my값이 범위를 벗어난 값일 경우가 있어서 사이즈 체크하는 구간을 변경해야함. move함수가 좋을듯
+    }
+    static void move(int color,int start, int end, int x, int y, int mx,int my)
+    {
+        List<Integer> tmp_list = map[x][y].subList(start,end);
+        if(color == 0) // 흰색
         {
-            moveList(level,size,cur_x,cur_y,mx,my);
+            for(int i : tmp_list)
+            {
+                map[mx][my].add(i);
+                piece[i].x = mx;
+                piece[i].y = my;
+            }
         }
-        else // 빨간색
+        else // 빨강
         {
-            tmp_list = map[cur_x][cur_y].subList(level,size);
             for(int i = tmp_list.size()-1; i >= 0; --i)
             {
                 int num = tmp_list.get(i);
@@ -129,19 +138,6 @@ public class Q17837 {
                 piece[num].x = mx;
                 piece[num].y = my;
             }
-            map[cur_x][cur_y].subList(level,size).clear();
-        }
-        return map[mx][my].size() > 4;
-    }
-    static void moveList(int start, int end, int x, int y, int mx,int my)
-    {
-        List<Integer> tmp_list = map[x][y].subList(start,end);
-        for(int i : tmp_list)
-        {
-            map[mx][my].add(i);
-            piece[i].x = mx;
-            piece[i].y = my;
-            System.out.printf("move %d to (%d,%d)\n",i,mx,my);
         }
         map[x][y].subList(start,end).clear();
     }
