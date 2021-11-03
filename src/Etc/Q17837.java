@@ -60,25 +60,10 @@ public class Q17837 {
         {
             for(int i = 1; i <= K; ++i)
             {
-                System.out.printf("t = %d\n",t);
                 flag = next(piece[i],i);
                 if(flag) break loop;
-                if(t < 8)
-                {
-                    for(int j = 0; j < N; ++j)
-                    {
-                        for(int k = 0; k < N; ++k)
-                        {
-                            System.out.printf("(%d,%d) ",j,k);
-                            for(int l : map[j][k])
-                            {
-                                System.out.print(l+" ");
-                            }
-                            System.out.println();
-                        }
-                    }
-                }
             }
+
         }
         int answer = t == 1001 ? -1 : t;
         System.out.print(answer);
@@ -105,16 +90,15 @@ public class Q17837 {
 
         if(nextBlock == 2) // 범위벗어났거나 파란블록
         {
-            int dir;
-            if(p.dir == 0) dir = 1;
-            else if(p.dir == 1) dir = 0;
-            else if(p.dir == 2) dir = 3;
-            else dir = 2;
+            if(p.dir == 0) p.dir = 1;
+            else if(p.dir == 1) p.dir = 0;
+            else if(p.dir == 2) p.dir = 3;
+            else p.dir = 2;
 
-            mx = cur_x + dx[dir];
-            my = cur_y + dy[dir];
+            mx = cur_x + dx[p.dir];
+            my = cur_y + dy[p.dir];
 
-            if(!isValid(mx,my) || map[mx][my].get(0) == 2) p.dir = dir;
+            if(!isValid(mx,my) || map[mx][my].get(0) == 2) return false;
             else
             {
                 return move(map[mx][my].get(0),level,size,cur_x,cur_y,mx,my);
@@ -124,8 +108,6 @@ public class Q17837 {
         {
             return move(nextBlock,level,size,cur_x,cur_y,mx,my);
         }
-        return false; // 방향전환시 mx,my값이 범위를 벗어난 값일 경우가 있어서 사이즈 체크하는 구간을 변경해야함. move함수가 좋을듯
-        // move함수 호출전 end-start값 + mx my size 비교해서 5이상이면 true반환
     }
     static boolean move(int color,int start, int end, int x, int y, int mx,int my)
     {
