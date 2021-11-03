@@ -60,24 +60,27 @@ public class Q17837 {
         {
             for(int i = 1; i <= K; ++i)
             {
-                System.out.printf("move %d at (%d,%d) dir = %d\n",i,piece[i].x,piece[i].y,piece[i].dir);
+                System.out.printf("t = %d\n",t);
                 flag = next(piece[i],i);
                 if(flag) break loop;
-                for(int j = 0; j < N; ++j)
+                if(t < 8)
                 {
-                    for(int k = 0; k < N; ++k)
+                    for(int j = 0; j < N; ++j)
                     {
-                        System.out.printf("(%d,%d) ",j,k);
-                        for(int l : map[j][k])
+                        for(int k = 0; k < N; ++k)
                         {
-                            System.out.print(l+" ");
+                            System.out.printf("(%d,%d) ",j,k);
+                            for(int l : map[j][k])
+                            {
+                                System.out.print(l+" ");
+                            }
+                            System.out.println();
                         }
-                        System.out.println();
                     }
                 }
             }
         }
-        int answer = t == 1000 ? -1 : t;
+        int answer = t == 1001 ? -1 : t;
         System.out.print(answer);
     }
     static boolean next(Piece p,int n)
@@ -112,14 +115,24 @@ public class Q17837 {
             my = cur_y + dy[dir];
 
             if(!isValid(mx,my) || map[mx][my].get(0) == 2) p.dir = dir;
-            else move(map[mx][my].get(0),level,size,cur_x,cur_y,mx,my);
+            else
+            {
+                return move(map[mx][my].get(0),level,size,cur_x,cur_y,mx,my);
+            }
         }
-        else move(nextBlock,level,size,cur_x,cur_y,mx,my);
-        return map[mx][my].size() > 4; // 방향전환시 mx,my값이 범위를 벗어난 값일 경우가 있어서 사이즈 체크하는 구간을 변경해야함. move함수가 좋을듯
+        else
+        {
+            return move(nextBlock,level,size,cur_x,cur_y,mx,my);
+        }
+        return false; // 방향전환시 mx,my값이 범위를 벗어난 값일 경우가 있어서 사이즈 체크하는 구간을 변경해야함. move함수가 좋을듯
+        // move함수 호출전 end-start값 + mx my size 비교해서 5이상이면 true반환
     }
-    static void move(int color,int start, int end, int x, int y, int mx,int my)
+    static boolean move(int color,int start, int end, int x, int y, int mx,int my)
     {
         List<Integer> tmp_list = map[x][y].subList(start,end);
+        int start_size = tmp_list.size();
+        int end_size = map[mx][my].size();
+        if(start_size + end_size > 4) return true;
         if(color == 0) // 흰색
         {
             for(int i : tmp_list)
@@ -131,7 +144,7 @@ public class Q17837 {
         }
         else // 빨강
         {
-            for(int i = tmp_list.size()-1; i >= 0; --i)
+            for(int i = start_size-1; i >= 0; --i)
             {
                 int num = tmp_list.get(i);
                 map[mx][my].add(num);
@@ -140,6 +153,7 @@ public class Q17837 {
             }
         }
         map[x][y].subList(start,end).clear();
+        return false;
     }
     static boolean isValid(int x, int y)
     {
