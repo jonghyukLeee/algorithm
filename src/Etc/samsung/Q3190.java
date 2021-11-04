@@ -1,4 +1,4 @@
-package Etc;
+package Etc.samsung;
 
 import java.io.BufferedReader;
 import java.io.IOException;
