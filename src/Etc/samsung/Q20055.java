@@ -7,7 +7,7 @@ import java.util.*;
 
 class Belt
 {
-    boolean hasBox;
+    boolean hasRobot;
     int durability;
 
     public Belt(int durability)
@@ -16,12 +16,12 @@ class Belt
     }
     public void setBox()
     {
-        this.hasBox = true;
+        this.hasRobot = true;
         this.durability--;
     }
     public void getBox()
     {
-        this.hasBox = false;
+        this.hasRobot = false;
     }
 
 }
@@ -29,7 +29,6 @@ public class Q20055 {
     static int N,K;
     static int zero_cnt;
     static List<Belt> belt;
-    static Queue<Integer> q;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -40,39 +39,45 @@ public class Q20055 {
         belt = new LinkedList<>();
 
         for(int i  = 0; i < N*2; ++i) belt.add(new Belt(Integer.parseInt(st.nextToken())));
+        int remove_point = N-1;
+        int last_idx = (N*2)-1;
 
-        q = new LinkedList<>();
         int t = 0;
         while(zero_cnt < K)
         {
             t++;
-            if(!q.isEmpty()) // 벨트위에 로보트가 있다면
+            //벨트 회전
+            belt.add(0,belt.remove(last_idx));
+            if(belt.get(remove_point).hasRobot) belt.get(remove_point).getBox();
+
+            for(int i = last_idx-1; i > 0; --i)
             {
-                int cur = q.poll();
-                int mv_idx = cur+1;
-                if(mv_idx < N-1)
+                Belt cur = belt.get(i);
+                if(cur.hasRobot)
                 {
-                    Belt tmp = belt.get(mv_idx);
-                    if(!tmp.hasBox && tmp.durability > 0)
+                    Belt next = belt.get(i+1);
+                    if(!next.hasRobot && next.durability > 0)
                     {
-                        q.add(mv_idx);
-                        tmp.setBox();
-                        if(tmp.durability == 0) zero_cnt++;
-                        belt.get(cur).getBox();
+                        if(i+1 == remove_point)
+                        {
+                            next.durability--;
+                        }
+                        else
+                        {
+                            next.setBox();
+                        }
+                        cur.getBox();
+                        if(next.durability == 0) zero_cnt++;
                     }
-                    else if(tmp.durability > 0) q.add(cur);
                 }
             }
             Belt fst = belt.get(0);
-            if(!fst.hasBox && fst.durability > 0)
+            if(fst.durability > 0)
             {
-                q.add(0);
                 fst.setBox();
                 if(fst.durability == 0) zero_cnt++;
             }
-            for(Belt b : belt) System.out.print(b.durability+" ");
-            System.out.print("zero = "+zero_cnt);
-            System.out.println();
+
         }
         System.out.print(t);
     }
