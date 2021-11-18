@@ -124,6 +124,11 @@ public class Q17825 {
         else
         {
             visited[map][piece[num].loc] = true;
+            if(piece[num].loc == 40) // 40은 양쪽 공통
+            {
+                map ^= 1;
+                visited[map][40] = true;
+            }
         }
         if(piece[num].loc == 31) return 30;
         return piece[num].loc;
