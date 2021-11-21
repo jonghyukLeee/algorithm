@@ -72,7 +72,6 @@ public class Q19238 {
                 return;
             }
         }
-
         pq = new PriorityQueue<>(new Comparator<Loc>() {
             @Override
             public int compare(Loc o1, Loc o2) {
