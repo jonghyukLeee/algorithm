@@ -3,20 +3,18 @@ package Etc.samsung2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
-class Tile
+class Point
 {
-    boolean visited;
-    int val,point;
+    int x,y;
 
-    public Tile(int val)
+    public Point(int x, int y)
     {
-        this.val = val;
-    }
-    public void setPoint(int point)
-    {
-        this.point = point;
+        this.x = x;
+        this.y = y;
     }
 }
 class Dice
@@ -58,10 +56,10 @@ class Dice
 public class Q23288 {
     static int N,M,K;
     static int answer;
-    static int tmp_val;
     static Dice dice;
-    static boolean [][] visited;
-    static Tile [][] map;
+    static int [] points;
+    static int [][] group;
+    static int [][] map;
     static int [] dx = {-1,0,1,0};
     static int [] dy = {0,1,0,-1}; // 상 우 하 좌
 
@@ -72,7 +70,9 @@ public class Q23288 {
         M = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
-        map = new Tile[N+1][M+1];
+        map = new int[N+1][M+1];
+        group = new int[N+1][M+1];
+        points = new int[401];
 
         dice = new Dice(1,1,1);
         dice.setTop(1);
@@ -87,7 +87,19 @@ public class Q23288 {
             st = new StringTokenizer(br.readLine());
             for(int j = 1; j <= M; ++j)
             {
-                map[i][j] = new Tile(Integer.parseInt(st.nextToken()));
+                map[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        int group_num = 1;
+        for(int i = 1; i <= N; ++i)
+        {
+            for(int j = 1; j <= M; ++j)
+            {
+                if(group[i][j] < 1)
+                {
+                    bfs(i,j,map[i][j],group_num++);
+                }
             }
         }
 
@@ -102,7 +114,6 @@ public class Q23288 {
         if(!isValid(mx,my))
         {
             dice.dir = (dice.dir + 2) % 4;
-
             mx = dice.x + dx[dice.dir];
             my = dice.y + dy[dice.dir];
         }
@@ -111,17 +122,11 @@ public class Q23288 {
         dice.x = mx;
         dice.y = my;
 
-        if(!map[dice.x][dice.y].visited)
-        {
-            visited = new boolean[N+1][M+1];
-            visited[dice.x][dice.y] = true;
-            tmp_val = map[dice.x][dice.y].val;
-            getScore(dice.x,dice.y,tmp_val,1);
-        }
-        answer += map[dice.x][dice.y].point;
+        int cur_group = group[dice.x][dice.y];
+        answer += points[cur_group];
 
         int bot = dice.bot;
-        int tile = map[dice.x][dice.y].val;
+        int tile = map[dice.x][dice.y];
         if(bot > tile) dice.dir = (dice.dir + 1) % 4;
         else if(bot < tile) dice.dir = (dice.dir + 3) % 4;
 
@@ -163,25 +168,28 @@ public class Q23288 {
             dice.setRight(tmp_bot);
         }
     }
-    static void getScore(int x, int y,int val, int cnt)
+    static void bfs(int i, int j,int val,int group_num)
     {
-        if(tmp_val < val * cnt) tmp_val = val * cnt;
-
-        for(int idx = 0; idx < 4; ++idx)
+        Queue<Point> q = new LinkedList<>();
+        q.add(new Point(i,j));
+        int cnt = 0;
+        while(!q.isEmpty())
         {
-            int mx = x + dx[idx];
-            int my = y + dy[idx];
+            Point cur = q.poll();
+            if(group[cur.x][cur.y] > 0) continue;
+            cnt++;
+            group[cur.x][cur.y] = group_num;
 
-            if(isValid(mx,my) && !visited[mx][my] && map[mx][my].val == val)
+            for(int idx = 0; idx < 4; ++idx)
             {
-                visited[mx][my] = true;
-                getScore(mx,my,val,cnt+1);
-                visited[mx][my] = false;
+                int mx = cur.x + dx[idx];
+                int my = cur.y + dy[idx];
+
+                if(!isValid(mx,my) || group[mx][my] > 0 || val != map[mx][my]) continue;
+                q.add(new Point(mx,my));
             }
         }
-
-        map[x][y].setPoint(tmp_val);
-        map[x][y].visited = true;
+        points[group_num] = cnt * val;
     }
     static boolean isValid(int x, int y)
     {
