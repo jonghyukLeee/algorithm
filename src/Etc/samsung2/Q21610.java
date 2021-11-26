@@ -10,8 +10,6 @@ import java.util.StringTokenizer;
 class Cloud
 {
     int x,y;
-    int val;
-    boolean visited;
 
     public Cloud(int x, int y)
     {
@@ -19,16 +17,13 @@ class Cloud
         this.y = y;
     }
 
-    public Cloud(int val)
-    {
-        this.val = val;
-    }
 }
 public class Q21610 {
     static int answer;
     static int N,M;
-    static Cloud [][] map;
+    static int [][] map;
     static Cloud [] command;
+    static boolean [][] visited;
     static Queue<Cloud> q;
     static int [] dx = {0,-1,-1,-1,0,1,1,1};
     static int [] dy = {-1,-1,0,1,1,1,0,-1};
@@ -40,14 +35,15 @@ public class Q21610 {
         M = Integer.parseInt(st.nextToken());
 
         command = new Cloud[M];
-        map = new Cloud[N+1][N+1];
+        map = new int[N+1][N+1];
+        visited = new boolean[N+1][N+1];
 
         for(int i = 1; i <= N; ++i)
         {
             st = new StringTokenizer(br.readLine());
             for(int j = 1; j <= N; ++j)
             {
-                map[i][j] = new Cloud(Integer.parseInt(st.nextToken()));
+                map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
@@ -88,8 +84,8 @@ public class Q21610 {
             while(!isValid(my)) my = change(my);
 
             mvd.add(new Cloud(mx,my));
-            map[mx][my].val++;
-            map[mx][my].visited = true;
+            map[mx][my]++;
+            visited[mx][my] = true;
         }
 
         //copy
@@ -103,10 +99,10 @@ public class Q21610 {
                 int mx = cur.x + dx[idx];
                 int my = cur.y + dy[idx];
 
-                if(!isValid(mx) || !isValid(my) || map[mx][my].val < 1) continue;
+                if(!isValid(mx) || !isValid(my) || map[mx][my] < 1) continue;
                 cnt++;
             }
-            map[cur.x][cur.y].val += cnt;
+            map[cur.x][cur.y] += cnt;
         }
         make();
     }
@@ -116,13 +112,13 @@ public class Q21610 {
         {
             for(int j = 1; j <= N; ++j)
             {
-                if((map[i][j].val >= 2) && !map[i][j].visited)
+                if((map[i][j] >= 2) && !visited[i][j])
                 {
                     q.add(new Cloud(i,j));
-                    map[i][j].val -= 2;
+                    map[i][j] -= 2;
                 }
-                else map[i][j].visited = false;
-                answer += map[i][j].val;
+                else visited[i][j] = false;
+                answer += map[i][j];
             }
         }
     }
