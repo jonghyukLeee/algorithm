@@ -21,7 +21,6 @@ public class Q20058 {
     static int N,Q;
     static int area;
     static int total;
-    static int sum = Integer.MIN_VALUE;
     static boolean [][] visited;
     static int [][] map;
     static int [][] tmp_map;
@@ -52,10 +51,11 @@ public class Q20058 {
             melt();
         }
         check();
-        System.out.printf("%d\n%d",sum,area);
+        System.out.printf("%d\n%d",total,area);
     }
     static void cast(int n)
     {
+        if(n < 1) return;
         tmp_map = new int[N][N];
         for(int i = 0; i < N; ++i) System.arraycopy(map[i],0,tmp_map[i],0,N);
 
@@ -80,6 +80,7 @@ public class Q20058 {
     }
     static void melt()
     {
+        Queue<Point2> tmp_q = new LinkedList<>();
         for(int i = 0; i < N; ++i)
         {
             for(int j = 0; j < N; ++j)
@@ -96,8 +97,14 @@ public class Q20058 {
                         if(map[mx][my] > 0) cnt++;
                     }
                 }
-                if(cnt < 3) map[i][j]--;
+                if(cnt < 3) tmp_q.add(new Point2(i,j));
             }
+        }
+
+        while(!tmp_q.isEmpty())
+        {
+            Point2 tmp = tmp_q.poll();
+            map[tmp.x][tmp.y]--;
         }
     }
     static void check()
@@ -112,14 +119,12 @@ public class Q20058 {
                 total += map[i][j];
                 if(!visited[i][j])
                 {
-                    visited[i][j] = true;
                     q.add(new Point2(i,j));
-                    int tmp_sum = 0;
+                    visited[i][j] = true;
                     int cnt = 0;
                     while(!q.isEmpty())
                     {
                         Point2 cur = q.poll();
-                        tmp_sum += map[cur.x][cur.y];
                         cnt++;
 
                         for(int idx = 0; idx < 4; ++idx)
@@ -132,11 +137,8 @@ public class Q20058 {
                             q.add(new Point2(mx,my));
                         }
                     }
-                    if(tmp_sum > sum)
-                    {
-                        sum = tmp_sum;
-                        area = cnt;
-                    }
+                    if(cnt == 1) continue;
+                    if(cnt > area) area = cnt;
                 }
             }
         }
