@@ -15,6 +15,11 @@ class Num
         this.y = y;
         this.dir = dir;
     }
+    public Num(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
 }
 public class Q21611 {
     static int N,M;
@@ -94,43 +99,40 @@ public class Q21611 {
             q.add(cnt);
             q.add(pre);
         }
-        list.clear();
+        list = new LinkedList<>();
         list.addAll(q);
     }
     static void destroy()
     {
-        while(true)
-        {
-            int size = list.size();
-            int cnt = 1;
-            int pre = list.get(1);
-            int pre_cnt = 0;
-            for(int i = 2; i < size; ++i)
-            {
-                int cur = list.get(i);
-                if(pre == cur) cnt++;
-                else
-                {
-                    if(cnt > 3)
-                    {
-                        int start = i-cnt;
-                        list.subList(start,start+cnt).clear();
-                        if(list.size() < 5) return;
-                        if(start > 0)
-                        {
-                            int back_idx = start-1;
-                            if(back_idx < 0) continue;
-                            i = back_idx;
-                            cnt = pre_cnt;
-                            pre = list.get(i);
-                            continue;
-                        }
-                    }
-                    else pre_cnt = cnt;
-                }
-                pre = cur;
+        int size = list.size();
+        PriorityQueue<Num> remove_q = new PriorityQueue<>(new Comparator<Num>() {
+            @Override
+            public int compare(Num o1, Num o2) {
+                return o2.x - o1.x;
             }
-
+        });
+        int cnt = 1;
+        for(int i = 1; i < size-1; ++i)
+        {
+            if(list.get(i) == list.get(i+1)) cnt++;
+            else
+            {
+                if(cnt > 3) remove_q.add(new Num(i-cnt+1,cnt));
+                cnt = 1;
+            }
+        }
+        if(!remove_q.isEmpty())
+        {
+            while(!remove_q.isEmpty())
+            {
+                Num cur = remove_q.poll();
+                int idx = cur.x;
+                int num = list.get(idx);
+                int t = cur.y;
+                destroyed[num] += t;
+                for(int i = 0; i < t; ++i) list.remove(idx);
+            }
+            destroy();
         }
     }
     static void blizzard(int dir, int dist)
