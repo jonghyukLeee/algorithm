@@ -54,7 +54,6 @@ public class Q21611 {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-
         setPoints();
         for(int i = 0 ; i < M; ++i)
         {
@@ -117,20 +116,33 @@ public class Q21611 {
             if(list.get(i) == list.get(i+1)) cnt++;
             else
             {
-                if(cnt > 3) remove_q.add(new Num(i-cnt+1,cnt));
+                if(cnt > 3) remove_q.add(new Num(i,cnt));
                 cnt = 1;
             }
         }
         if(!remove_q.isEmpty())
         {
+            ListIterator<Integer> it = list.listIterator();
+            while(it.hasNext()) it.next();
+            it.previous();
+            int it_idx = size-1;
             while(!remove_q.isEmpty())
             {
                 Num cur = remove_q.poll();
                 int idx = cur.x;
+                int tmp = it_idx-idx;
+                for(int i = 0; i < tmp; ++i) it.previous();
+                it_idx = idx;
                 int num = list.get(idx);
                 int t = cur.y;
                 destroyed[num] += t;
-                for(int i = 0; i < t; ++i) list.remove(idx);
+                for(int i = 0; i < t; ++i)
+                {
+                    it.remove();
+                    it.previous();
+                    it_idx--;
+                }
+
             }
             destroy();
         }
