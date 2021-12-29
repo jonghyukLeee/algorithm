@@ -3,7 +3,6 @@ package Basic.day10;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Q1325 {
