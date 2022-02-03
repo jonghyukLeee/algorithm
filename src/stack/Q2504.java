@@ -39,7 +39,7 @@ public class Q2504 {
                 stk.pop();
                 tmp /= 3;
             }
-            System.out.println(stk.size());
+            else exit();
         }
         if(!stk.isEmpty()) answer = 0;
         System.out.println(answer);
