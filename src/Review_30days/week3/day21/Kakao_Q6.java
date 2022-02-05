@@ -24,7 +24,7 @@ public class Kakao_Q6 {
             for(int i = r1; i <= r2; ++i)
             {
                 prefix_arr[i][c1] += degree;
-                prefix_arr[i][c2+1] += -degree;
+                prefix_arr[i][c2 + 1] -= degree;
             }
         }
         for(int i = 0; i < n; ++i)
