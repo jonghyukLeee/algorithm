@@ -44,12 +44,6 @@ public class Q14502_2 {
                 else if(next == 1) wall_cnt++;
             }
         }
-        int [][] copy_map = new int[N][M];
-
-        for(int i = 0; i < N; ++i)
-        {
-            System.arraycopy(origin[i],0,copy_map[i],0,M);
-        }
 
         makeWall(0);
         System.out.println(answer);
