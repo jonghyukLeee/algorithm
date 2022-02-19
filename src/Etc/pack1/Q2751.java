@@ -1,7 +1,6 @@
 package Etc.pack1;
 
 import java.io.*;
-import java.util.PriorityQueue;
 
 public class Q2751 {
     public static void main(String[] args) throws IOException {
