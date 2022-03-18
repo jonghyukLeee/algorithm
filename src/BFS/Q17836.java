@@ -1,3 +1,5 @@
+package BFS;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,15 +42,6 @@ public class Q17836 {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-
-//        PriorityQueue<Warrior> q = new PriorityQueue<>(new Comparator<Warrior>()
-//        {
-//            @Override
-//            public int compare(Warrior o1, Warrior o2)
-//            {
-//                return o1.t - o2.t;
-//            }
-//        });
         Queue<Warrior> q = new LinkedList<>();
         q.add(new Warrior(0,0,0,0));
         visited[0][0][0] = true;
