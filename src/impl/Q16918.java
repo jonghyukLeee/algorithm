@@ -5,17 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-class Bomb
-{
-    int x,y;
-    int time;
-
-    public Bomb(int x, int y, int time) {
-        this.x = x;
-        this.y = y;
-        this.time = time;
-    }
-}
 public class Q16918 {
     static int R,C,N;
     static char [][] map;
