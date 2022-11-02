@@ -1,3 +1,5 @@
+package unionfind;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,6 +24,12 @@ public class Q1043 {
         truth = new boolean[N + 1];
         st = new StringTokenizer(br.readLine());
         int tCount = Integer.parseInt(st.nextToken());
+
+        //아는사람 없으면 출력 후 종료
+        if (tCount < 1) {
+            System.out.print(M);
+            System.exit(0);
+        }
         for (int i = 0; i < tCount; i++) {
             int tmpNumber = Integer.parseInt(st.nextToken());
             truth[tmpNumber] = true;
