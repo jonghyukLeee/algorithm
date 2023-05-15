@@ -48,7 +48,6 @@ public class Q16953 {
             if (addOne <= b) pq.add(new Op(addOne, cur.count + 1));
 
         }
-
         System.out.print(answer);
     }
 }
