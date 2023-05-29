@@ -19,12 +19,22 @@ public class Main {
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < N; i++) oils[i] = Integer.parseInt(st.nextToken());
 
-        int idx = 0, currentOil = 0;
-        while (idx < N) {
-            if (isDone) break;
-            if (currentOil < roads[idx]) currentOil = fill(idx, currentOil);
-            currentOil -= roads[idx++];
+        /**
+         * 첫 번째 풀이, 58점 / 100점
+         */
+//        int idx = 0, currentOil = 0;
+//        while (idx < N) {
+//            if (isDone) break;
+//            if (currentOil < roads[idx]) currentOil = fill(idx, currentOil);
+//            currentOil -= roads[idx++];
+//        }
+
+        for (int i = 0; i < N - 1; i++) {
+            if (oils[i] < oils[i + 1]) oils[i + 1] = oils[i];
+            price += (roads[i] * oils[i]);
         }
+        price += (roads[N - 1] * oils[N - 1]); // 마지막 도시
+
         System.out.print(price);
     }
 
