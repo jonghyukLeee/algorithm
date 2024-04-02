@@ -1,48 +1,49 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static List<List<Integer>> map;
-    static int [] cnt;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
 
-        map = new ArrayList<>();
-        for(int i = 0; i <= n; ++i) map.add(new ArrayList<>());
-        cnt = new int[n+1];
+        List<Integer>[] map = new ArrayList[n + 1];
+        int[] count = new int[n + 1];
+        for (int i = 1; i <= n; i++) map[i] = new ArrayList<>();
 
-        for(int i = 0; i < m; ++i)
-        {
+        for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
-            int fst = Integer.parseInt(st.nextToken());
-            int sec = Integer.parseInt(st.nextToken());
+            int first = Integer.parseInt(st.nextToken());
+            int second = Integer.parseInt(st.nextToken());
 
-            map.get(fst).add(sec);
-            cnt[sec]++;
+            map[first].add(second);
+            count[second]++;
         }
 
-       Queue<Integer> q = new LinkedList<>();
-        for(int i = 1; i <= n; ++i)
-        {
-            if(cnt[i] == 0) q.add(i);
+        Queue<Integer> q = new LinkedList<>();
+
+        for (int i = 1; i <= n; i++) {
+            if (count[i] == 0) q.add(i);
         }
 
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        while(!q.isEmpty())
-        {
-            int cur = q.poll();
-            bw.write(cur+" ");
+        StringBuilder sb = new StringBuilder();
+        while (!q.isEmpty()) {
+            int current = q.poll();
 
-            for(int next : map.get(cur))
-            {
-                cnt[next]--;
-                if(cnt[next] == 0) q.add(next);
+            sb.append(current).append(" ");
+
+            for (int next: map[current]) {
+                count[next]--;
+                if (count[next] == 0) {
+                    q.add(next);
+                }
             }
         }
-        bw.flush();
-        bw.close();
+
+        sb.deleteCharAt(sb.length() - 1);
+        System.out.print(sb);
     }
 }
