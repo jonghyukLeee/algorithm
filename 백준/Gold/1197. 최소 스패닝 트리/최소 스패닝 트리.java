@@ -1,71 +1,62 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
-class Node
-{
-    int start, end, weight;
+class Node {
+    int n, weight;
 
-    public Node(int start, int end, int weight)
-    {
-        this.start = start;
-        this.end = end;
+    public Node(int n, int weight) {
+        this.n = n;
         this.weight = weight;
     }
 }
 public class Main {
-    static ArrayList<Node> al;
-    static int [] parents;
-    static int v;
-    static int answer;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        v = Integer.parseInt(st.nextToken());
+        int v = Integer.parseInt(st.nextToken());
         int e = Integer.parseInt(st.nextToken());
 
-        al = new ArrayList<>();
-        parents = new int[v+1];
-        for(int i = 1; i <= v; ++i) parents[i] = i;
+        List<Node>[] map = new ArrayList[v + 1];
+        for (int i = 1; i <= v; i++) map[i] = new ArrayList<>();
 
-        for(int i = 0; i < e; ++i)
-        {
+        for (int i = 0 ; i < e; i++) {
             st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            int c = Integer.parseInt(st.nextToken());
-            al.add(new Node(a,b,c));
+            int from = Integer.parseInt(st.nextToken());
+            int to = Integer.parseInt(st.nextToken());
+            int weight = Integer.parseInt(st.nextToken());
+
+            map[from].add(new Node(to, weight));
+            map[to].add(new Node(from, weight));
         }
-        al.sort(new Comparator<Node>() {
-            @Override
-            public int compare(Node o1, Node o2) {
-                return o1.weight - o2.weight;
-            }
+
+        PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> {
+            return o1.weight - o2.weight;
         });
-        int cnt = 0;
-        for(Node cur : al)
-        {
-            if(cnt == v-1) break;
-            if(!(getParent(cur.start) == getParent(cur.end)))
-            {
-                union(cur.start,cur.end);
-                cnt++;
-                answer += cur.weight;
+
+        pq.add(new Node(1, 0));
+        boolean[] isVisited = new boolean[v + 1];
+        int answer = 0;
+
+        while (!pq.isEmpty()) {
+            Node current = pq.poll();
+
+            if (!isVisited[current.n]) {
+                isVisited[current.n] = true;
+                answer += current.weight;
+
+                for (Node next: map[current.n]) {
+                    if (!isVisited[next.n]) {
+                        pq.add(next);
+                    }
+                }
             }
         }
+
         System.out.print(answer);
-    }
-    static int getParent(int child)
-    {
-        if(parents[child] == child) return child;
-        else
-        {
-            return parents[child] = getParent(parents[child]);
-        }
-    }
-    static void union(int p, int c)
-    {
-        parents[getParent(c)] = getParent(p);
     }
 }
