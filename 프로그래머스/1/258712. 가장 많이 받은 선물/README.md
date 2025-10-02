@@ -1,10 +1,10 @@
 # [level 1] 가장 많이 받은 선물 - 258712 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/258712) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/258712?language=kotlin) 
 
 ### 성능 요약
 
-메모리: 75.5 MB, 시간: 2.98 ms
+메모리: 84.9 MB, 시간: 50.13 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 04월 18일 17:13:02
+2025년 10월 02일 19:32:11
 
 ### 문제 설명
 
