@@ -6,57 +6,59 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-class Node {
-    int n, weight;
+class Prim implements Comparable<Prim>{
+    int target;
+    int weight;
 
-    public Node(int n, int weight) {
-        this.n = n;
+    public Prim(int target, int weight) {
+        this.target = target;
         this.weight = weight;
+    }
+
+    @Override
+    public int compareTo(Prim p) {
+        return this.weight - p.weight;
     }
 }
 public class Main {
+    static int V, E;
+    static List<List<Prim>> map;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int v = Integer.parseInt(st.nextToken());
-        int e = Integer.parseInt(st.nextToken());
-
-        List<Node>[] map = new ArrayList[v + 1];
-        for (int i = 1; i <= v; i++) map[i] = new ArrayList<>();
-
-        for (int i = 0 ; i < e; i++) {
+        V = Integer.parseInt(st.nextToken());
+        E = Integer.parseInt(st.nextToken());
+        map = new ArrayList<>();
+        for(int i = 0; i <= V; i++) map.add(new ArrayList<>());
+        PriorityQueue<Prim> pq = new PriorityQueue<>();
+        for(int i = 0; i < E; i++) {
             st = new StringTokenizer(br.readLine());
-            int from = Integer.parseInt(st.nextToken());
-            int to = Integer.parseInt(st.nextToken());
-            int weight = Integer.parseInt(st.nextToken());
+            int s = Integer.parseInt(st.nextToken());
+            int e = Integer.parseInt(st.nextToken());
+            int w = Integer.parseInt(st.nextToken());
 
-            map[from].add(new Node(to, weight));
-            map[to].add(new Node(from, weight));
+            map.get(s).add(new Prim(e, w));
+            map.get(e).add(new Prim(s, w));
         }
 
-        PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> {
-            return o1.weight - o2.weight;
-        });
+        boolean[] isDone = new boolean[V + 1];
+        pq.add(new Prim(1, 0));
+        int count = 0;
+        int weight = 0;
+        while(!pq.isEmpty()) {
+            Prim cur = pq.poll();
 
-        pq.add(new Node(1, 0));
-        boolean[] isVisited = new boolean[v + 1];
-        int answer = 0;
+            if(isDone[cur.target]) continue;
+            count++;
+            isDone[cur.target] = true;
+            weight += cur.weight;
+            if(count == V) break;
 
-        while (!pq.isEmpty()) {
-            Node current = pq.poll();
-
-            if (!isVisited[current.n]) {
-                isVisited[current.n] = true;
-                answer += current.weight;
-
-                for (Node next: map[current.n]) {
-                    if (!isVisited[next.n]) {
-                        pq.add(next);
-                    }
-                }
+            for(Prim next: map.get(cur.target)) {
+                if(!isDone[next.target]) pq.add(next);
             }
         }
 
-        System.out.print(answer);
+        System.out.print(weight);
     }
 }
